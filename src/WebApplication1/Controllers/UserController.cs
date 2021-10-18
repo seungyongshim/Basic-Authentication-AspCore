@@ -1,5 +1,6 @@
 namespace WebApplication1.Controllers
 {
+    using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Mvc;
 
     [Route("api/[controller]")]
@@ -14,6 +15,7 @@ namespace WebApplication1.Controllers
         }
 
         [HttpGet("only-authenticated")]
+        [Authorize]
         public IActionResult OnlyAuthenticated()
         {
             var message = $"Hello form {nameof(OnlyAuthenticated)}";

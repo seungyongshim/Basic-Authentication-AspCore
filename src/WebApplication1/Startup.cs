@@ -6,7 +6,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -25,6 +24,12 @@ namespace WebApplication1
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddAuthentication(option =>
+            {
+                option.DefaultAuthenticateScheme = ApiKeyAuthenticationOptions.DefaultScheme;
+                option.DefaultChallengeScheme = ApiKeyAuthenticationOptions.DefaultScheme;
+            })
+            .AddApiKeySupport(option => { });
 
             services.AddControllers();
             services.AddSwaggerGen(c =>
@@ -45,8 +50,9 @@ namespace WebApplication1
 
             app.UseRouting();
 
-            app.UseAuthorization();
-
+            app.UseAuthentication(); // 인증
+            app.UseAuthorization();  // 허가(권한&정책)
+ 
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
