@@ -18,7 +18,7 @@ indent_style = space
 indent_size = 4
 insert_final_newline = true
 trim_trailing_whitespace = true
-csharp_using_directive_placement=inside_namespace:suggestion
+csharp_using_directive_placement=outside_namespace:warning
 csharp_style_expression_bodied_methods=when_on_single_line:warning
 csharp_style_expression_bodied_constructors=when_on_single_line:warning
 
@@ -88,10 +88,10 @@ indent_style = tab
 [*.{cs,csx,cake,vb,vbx}]
 # "this." and "Me." qualifiers
 # https://docs.microsoft.com/visualstudio/ide/editorconfig-language-conventions#this-and-me
-dotnet_style_qualification_for_field =true:error
-dotnet_style_qualification_for_property =true:error
-dotnet_style_qualification_for_method =true:error
-dotnet_style_qualification_for_event =true:error
+dotnet_style_qualification_for_field =false:error
+dotnet_style_qualification_for_property =false:error
+dotnet_style_qualification_for_method =false:error
+dotnet_style_qualification_for_event =false:error
 # Language keywords instead of framework type names for type references
 # https://docs.microsoft.com/visualstudio/ide/editorconfig-language-conventions#language-keywords
 dotnet_style_predefined_type_for_locals_parameters_members = true:warning
