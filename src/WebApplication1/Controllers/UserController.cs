@@ -21,5 +21,13 @@ namespace WebApplication1.Controllers
             var message = $"Hello form {nameof(OnlyAuthenticated)}";
             return Ok(message);
         }
+
+        [HttpGet("only-managers")]
+        [Authorize(Policy = "OnlyManagers")]
+        public IActionResult OnlyManagers()
+        {
+            var message = $"Hello from {nameof(OnlyManagers)}";
+            return new ObjectResult(message);
+        }
     }
 }
