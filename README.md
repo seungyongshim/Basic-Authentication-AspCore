@@ -5,3 +5,4 @@
 * https://blog.jiniworld.me/105
 * https://stackoverflow.com/questions/57943550/how-to-document-api-key-authentication-using-swashbuckle-aspnetcore-v5-0-0-rc2
 * https://josef.codes/asp-net-core-protect-your-api-with-api-keys/
+* https://stackoverflow.com/questions/56234504/bearer-authentication-in-swagger-ui-when-migrating-to-swashbuckle-aspnetcore-ve

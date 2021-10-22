@@ -4,17 +4,13 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
-using System.Threading.Tasks;
 
 namespace WebApplication1
 {
-    
+
     public class Startup
     {
-        public Startup(IConfiguration configuration)
-        {
-            Configuration = configuration;
-        }
+        public Startup(IConfiguration configuration) => Configuration = configuration;
 
         public IConfiguration Configuration { get; }
 
@@ -34,27 +30,48 @@ namespace WebApplication1
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "WebApplication1", Version = "v1" });
-                c.AddSecurityDefinition("basic", new OpenApiSecurityScheme
+                c.AddSecurityDefinition("ApiKey", new OpenApiSecurityScheme
                 {
-                    Name = "Authorization",
-                    Type = SecuritySchemeType.Http,
+                    Name = "X-Api-Key",
+                    Type = SecuritySchemeType.ApiKey,
                     Scheme = "basic",
                     In = ParameterLocation.Header,
-                    Description = "Basic Authorization header using the Bearer scheme."
+                    Description = "GUID ApiKey",
+
                 });
+                //c.AddSecurityDefinition("basic", new OpenApiSecurityScheme
+                //{
+                //    Name = "Authorization",
+                //    Type = SecuritySchemeType.Http,
+                //    Scheme = "basic",
+                //    In = ParameterLocation.Header,
+                //    Description = "Basic Authorization header using the Bearer scheme."
+                //});
                 c.AddSecurityRequirement(new OpenApiSecurityRequirement
                 {
                     {
-                          new OpenApiSecurityScheme
+                        new OpenApiSecurityScheme
                             {
                                 Reference = new OpenApiReference
                                 {
                                     Type = ReferenceType.SecurityScheme,
-                                    Id = "basic"
-                                }
+                                    Id = "ApiKey"
+                                },
+                                In = ParameterLocation.Header,
                             },
                             new string[] {}
-                    }
+                    },
+                    //{
+                    //    new OpenApiSecurityScheme
+                    //        {
+                    //            Reference = new OpenApiReference
+                    //            {
+                    //                Type = ReferenceType.SecurityScheme,
+                    //                Id = "basic"
+                    //            }
+                    //        },
+                    //        new string[] {}
+                    //}
                 });
             });
         }
@@ -73,7 +90,7 @@ namespace WebApplication1
 
             app.UseAuthentication(); // 인증
             app.UseAuthorization();  // 허가(권한&정책)
- 
+
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
