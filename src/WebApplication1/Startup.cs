@@ -1,3 +1,5 @@
+using System;
+using System.Collections.Generic;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -37,41 +39,51 @@ namespace WebApplication1
                     Scheme = "basic",
                     In = ParameterLocation.Header,
                     Description = "GUID ApiKey",
-
                 });
-                //c.AddSecurityDefinition("basic", new OpenApiSecurityScheme
-                //{
-                //    Name = "Authorization",
-                //    Type = SecuritySchemeType.Http,
-                //    Scheme = "basic",
-                //    In = ParameterLocation.Header,
-                //    Description = "Basic Authorization header using the Bearer scheme."
-                //});
+                c.AddSecurityDefinition("OAuth2", new OpenApiSecurityScheme
+                {
+                    Type = SecuritySchemeType.OAuth2,
+                    Flows = new OpenApiOAuthFlows
+                    {
+                        Implicit = new OpenApiOAuthFlow()
+                        {
+                            AuthorizationUrl = new Uri("https://login.microsoftonline.com/7493ef9e-db24-45d8-91b5-9c36018d6d52/oauth2/v2.0/authorize"),
+                            TokenUrl = new Uri("https://login.microsoftonline.com/7493ef9e-db24-45d8-91b5-9c36018d6d52/oauth2/v2.0/token"),
+                            Scopes = new Dictionary<string, string>
+                            {
+                                ["api://29a02307-5a1b-460c-85ba-9e9abb75e48d/Read.WeatherForecast"] = "Reads the Weather forecast"
+                            }
+                        }
+                    }
+                });
                 c.AddSecurityRequirement(new OpenApiSecurityRequirement
                 {
                     {
                         new OpenApiSecurityScheme
+                        {
+                            Reference = new OpenApiReference
                             {
-                                Reference = new OpenApiReference
-                                {
-                                    Type = ReferenceType.SecurityScheme,
-                                    Id = "ApiKey"
-                                },
-                                In = ParameterLocation.Header,
+                                Type = ReferenceType.SecurityScheme,
+                                Id = "ApiKey"
                             },
-                            new string[] {}
+                            In = ParameterLocation.Header,
+                        },
+                        new string[] {}
                     },
-                    //{
-                    //    new OpenApiSecurityScheme
-                    //        {
-                    //            Reference = new OpenApiReference
-                    //            {
-                    //                Type = ReferenceType.SecurityScheme,
-                    //                Id = "basic"
-                    //            }
-                    //        },
-                    //        new string[] {}
-                    //}
+                    {
+                        new OpenApiSecurityScheme
+                        {
+                            Reference = new OpenApiReference
+                            {
+                                Type = ReferenceType.SecurityScheme,
+                                Id = "OAuth2"
+                            },
+                            Scheme = "OAuth2",
+                            Name = "OAuth2",
+                            In = ParameterLocation.Header,
+                        },
+                        new string[] {}
+                    }
                 });
             });
         }
